@@ -156,7 +156,11 @@
 
 \
 \begin{abstract}
+	Stochastic processes are powerful tools which can be applied to almost any time series-related problem. They offer clear representations of real-world processes in ways in which deterministic formulae cannot. Yet, the underlying mathematics complicate their application. One aspect of particular concern is the calibration of these processes to real-world data sets. Common calibration methods, including \acrfull{mlestimation} and the \acrfull{mme}, can break down under more complex stochastic processes. \acrshort{mlestimation}, for example, requires the derivation of the likelihood function, which often requires a deep understanding of stochastic calculus.
 	
+	This dissertation proposes the use of \acrlong{ann}s (\acrshort{ann}s) as an alternative calibration method. The results obtained in the simulation study demonstrate the ability of \acrshort{ann}s to act as a calibration scheme for a complex stochastic process - the Merton Jump-Diffusion process. The ultimate hope is that \acrshort{ann}s might offer a universal calibration scheme for any stochastic process.
+	
+	The project starts by introducing stochastic processes and \acrshort{ann}s, followed by an analysis of the simulation study performed on the Merton Jump-Diffusion process. The performance of the \acrshort{ann} models are then compared to that of traditional calibration procedures.
 \end{abstract}
 
 \tableofcontents
@@ -236,7 +240,7 @@ The model drops some of the strong assumptions made by \acrshort{mlestimation} a
 Another possible advantage could lie in the scheme's ability to combine the predictive power of \acrshort{ann}s with the descriptive properties of certain stochastic processes. \citet{Olden} explain that "although in many studies \acrshort{ann}s have been shown to exhibit superior predictive power compared to traditional approaches, they have also been labelled a 'black box' because they provide little explanatory insight into the relative influence of the independent variables in the prediction process". The approach, whereby the \acrshort{ann} is used only to calibrate a more expressive and widely understood model - a stochastic process - might help to remedy this.
 
 
-\citet{Mongwe} presents the example of the Merton jump diffusion process with \acrshort{sde},
+\citet{Mongwe} presents the example of the Merton Jump-Diffusion process with \acrshort{sde},
 
 \begin{equation}
 	d \ln{S_t}= \left( \mu - \frac{1}{2} \sigma^2 \right )dt+\sigma dB +d \left( \sum_{i=1}^{N_t} Y_i \right )
@@ -325,7 +329,7 @@ The main argument for a universal neural network approach to model calibration i
 \citefullauthor{Nielsen} (\citeyear{Nielsen}) reviewed the progress made on \acrshort{sde} parameter estimation over the 80s and 90s. They note that the \acrshort{mlestimation} approach does not generalise and, having studied the \acrshort{mme} and the efficient method of moments, they explain that both of these methods will result in tests of low power due to the efficiency loss.
 
 
-More recently, \citet{Mongwe} did a study on jump diffusion processes applied to the South African equity and interest rate markets. He reported on the application and accuracy of multiple calibration methods, including the likelihood profiling approach \citep{Honore}, the standard \acrshort{mlestimation} approach, the \acrshort{mlestimation} approach and \acrfull{em}. He concluded that both \acrshort{mlestimation} and \acrshort{mme} fell short of expectations, and that the likelihood profiling and \acrshort{em} techniques worked best on parameter estimation for jump diffusion processes (each under different restrictions on the parameters) (Mongwe, 2015). These recommendations will be applied when evaluating and comparing the performance of the neural-network calibration approach in this paper to that of existing methods.
+More recently, \citet{Mongwe} did a study on jump-diffusion processes applied to the South African equity and interest rate markets. He reported on the application and accuracy of multiple calibration methods, including the likelihood profiling approach \citep{Honore}, the standard \acrshort{mlestimation} approach, the \acrshort{mlestimation} approach and \acrfull{em}. He concluded that both \acrshort{mlestimation} and \acrshort{mme} fell short of expectations, and that the likelihood profiling and \acrshort{em} techniques worked best on parameter estimation for jump-diffusion processes (each under different restrictions on the parameters) (Mongwe, 2015). These recommendations will be applied when evaluating and comparing the performance of the neural-network calibration approach in this paper to that of existing methods.
 
 
 \section{Neural Networks in Modelling and Model Calibration}
@@ -450,11 +454,11 @@ where $y$ is the actual observed parameter (output) value, $\hat{y}$ is the pred
 \chapter{Simulation Study}
 \label{chapter:simulation_study}
 
-It is important to note that when building a neural network for a specific modelling exercise, one has little prior knowledge of what the model should look like. Rough guidlines do exist, for example that \acrfull{rnn} architectures are often used for time series problems (SOURCE?) or that \acrlong{cnn}s (\acrshort{cnn}s) are well suited to image recognition tasks (SOURCE?). Beyond these vague guidelines however, little evidence exists to inform the potential properties that a network might need.
+It is important to note that when building a neural network for a specific modelling exercise, one has little prior knowledge of what the model should look like. Rough guidlines do exist, for example that \acrfull{rnn} architectures are often used for time series problems \citep{Karpathy} or that \acrlong{cnn}s (\acrshort{cnn}s) are well suited to image recognition tasks \citep{LISALab}. Beyond these vague guidelines however, little evidence exists to inform the potential properties that a network might need.
 
-\section{The Merton Jump Diffusion Stochastic Process}
+\section{The Merton Jump-Diffusion Stochastic Process}
 
-The Merton Jump Diffusion Stochastic process, presented in the seminal work of \citet{Merton}, aimed to address the limitations of the \acrshort{gbm} process. It has the stochastic differential equation,
+The Merton Jump-Diffusion stochastic process, presented in the seminal work of \citet{Merton}, aimed to address the limitations of the \acrshort{gbm} process. It has the stochastic differential equation,
 
 \begin{equation}
 d S_t =  \mu S_t dt  +\sigma S_t dW_t + S_t dJ_t 
@@ -476,12 +480,12 @@ In this dissertation we will have $V_j$ follow a log-normal distribution with pa
 
 \subsection{The Parameters}
 
-To better understand the effects of the parameters ($\mu$, $\sigma$, $\lambda$, $\mu_{jumps}$ and $\sigma_{jumps}$) on the resulting process, it is important to note that the Merton Jump Diffusion process can effectively be separated into two distinct components: the diffusion process (\acrshort{gbm}), as well as a jumps process. This is illustrated in figure \ref{fig:merton_jd_components} below.
+To better understand the effects of the parameters ($\mu$, $\sigma$, $\lambda$, $\mu_{jumps}$ and $\sigma_{jumps}$) on the resulting process, it is important to note that the Merton Jump-Diffusion process can effectively be separated into two distinct components: the diffusion process (\acrshort{gbm}), as well as a jumps process. This is illustrated in figure \ref{fig:merton_jd_components} below.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Images/Parameter-Effects/Merton_JD_Components}
-	\caption[The components of a simulated path from the Merton Jump Diffusion process]{The simulated asset price resulting from a Merton Jump Diffusion returns process, as well as that of its two components: a jumps process, and a \acrshort{gbm} process.}
+	\caption[The components of a simulated path from the Merton Jump-Diffusion process]{The simulated asset price resulting from a Merton Jump-Diffusion returns process, as well as that of its two components: a jumps process, and a \acrshort{gbm} process.}
 	\label{fig:merton_jd_components}
 \end{figure}
 
@@ -501,7 +505,7 @@ The simulated parameters, $\mu$, $\sigma$, $\lambda$, $\mu_{jumps}$ and $\sigma_
 \section{Fully Connected Neural Network}
 
 \subsection{Multiple Parameter Prediction Architecture} \label{subsection:fully_connected_ff_nn:architecture}
-The first study was done on a standard 9-layer fully connected multi-perceptron architecture, trained to predict all five parameters of the Merton Jump Diffusion process at once.
+The first study was done on a standard 9-layer fully connected multi-perceptron architecture, trained to predict all five parameters of the Merton Jump-Diffusion process at once.
 
 \begin{figure}[h]
 	\centering
@@ -518,7 +522,7 @@ The dataset on which the Fully Connected \acrshort{ann} was trained, was created
 \begin{enumerate}[1)]
 	\itemsep0em 
 	\item  Random sets of parameters, $\mathbf{z}_i$, with ($\mu \in \left[-1, 1\right]$, $\sigma \in \left[0.001, 0.2\right]$, $\lambda \in \left(0, 0.025\right]$, $\mu_{jumps} \in \left[-0.5, 0.5\right]$ and $\sigma_{jumps} \in \left[0.001, 0.2\right])$ were uniformly generated.
-	\item  The daily log returns from a Merton Jump Diffusion stochastic process (equation \ref{equation:merton_log_returns}) were simulated using these randomly generated parameter sets, $\mathbf{z}_i$, as parameters.
+	\item  The daily log returns from a Merton Jump-Diffusion stochastic process (equation \ref{equation:merton_log_returns}) were simulated using these randomly generated parameter sets, $\mathbf{z}_i$, as parameters.
 	\item  For each set of returns, the first 20 sample moments, as well as the autocorrelations up to the first 40 lags were calculated.
 	\item For every parameter set, its corresponding set of moments and autocorrelations were fed into the input layer of the \acrshort{ann} described in subsection \ref{subsection:fully_connected_ff_nn:architecture} above. The \acrshort{ann} was then trained, using the process of backpropagation, to produce an estimate, $\mathbf{o}_i$, of the original set of parameters, $\mathbf{z}_i$. This was done by minimizing the mean squared error between the vectors $\mathbf{z}_i$ and $\mathbf{o}_i$ (see the diagram in figure \ref{fig:calibrationschemediagram}).
 \end{enumerate}
@@ -615,9 +619,9 @@ The most obvious parameter estimation issue in the multiple output model of \ref
 The result is a much quicker and smoother convergence to an acceptable level of accuracy, as visible in figure \ref{fig:lambda-rsquared}. Compare this to the very rough convergence of $\lambda$ in figure \ref{fig:covnetmor22}. Quicker convergence leads to less training time and ultimately easier use of the model.
 
 \section{Sensitivity Tests}
-Due to the nature of the parameters involved in the Merton Jump Diffusion process, one could expect interactions between parameter estimates. For example, increasing the $\mu_{jumps}$ parameter might cause "confusion", since a model could "interpret" larger jumps as a higher rate of volatility from the \acrshort{gbm} $\sigma$ component, and hence produce higher values of $\sigma$. What follows is an investigation into how sensitive the individual parameter estimates are with respect to changes in the magnitudes of the other parameters. 
+Due to the nature of the parameters involved in the Merton Jump-Diffusion process, one could expect interactions between parameter estimates. For example, increasing the $\mu_{jumps}$ parameter might cause "confusion", since a model could "interpret" larger jumps as a higher rate of volatility from the \acrshort{gbm} $\sigma$ component, and hence produce higher values of $\sigma$. What follows is an investigation into how sensitive the individual parameter estimates are with respect to changes in the magnitudes of the other parameters. 
 
-This investigation was performed using $1000$ simulated sample paths from a Merton Jump Diffusion process with parameters $\mu, \sigma, \lambda, \mu_{jumps}$ and $\sigma_{jumps}$. With each test, a single parameter was selected to be varied during the training process. The effect of this parameter change on the \acrshort{ann} performance was then monitored by reading the estimates of each of the other parameters and comparing them to their actual values.
+This investigation was performed using $1000$ simulated sample paths from a Merton Jump-Diffusion process with parameters $\mu, \sigma, \lambda, \mu_{jumps}$ and $\sigma_{jumps}$. With each test, a single parameter was selected to be varied during the training process. The effect of this parameter change on the \acrshort{ann} performance was then monitored by reading the estimates of each of the other parameters and comparing them to their actual values.
 
 \subsubsection{Variations in $\mu$}
 %\begin{figure}[h]
@@ -664,7 +668,7 @@ This investigation was performed using $1000$ simulated sample paths from a Mert
 		\caption{The parameter estimates (with $68\%$ confidence interval) of $\hat{\sigma}$, $\hat{\lambda}$, $\hat{\mu}_{jumps}$ and $\hat{\sigma}_{jumps}$, plotted against their actual values ($\sigma = 0.1$, $\lambda = 0.02$, $\mu_{jumps} = 0.05$ and $\sigma_{jumps} = 0.07$), while varying the $\mu$ parameter in the range $\left(-1.0, 1.0\right)$.}
 		\label{fig:sensitivity_test:multiple_output:varying_mu}}
 \end{figure}
-Of all the parameters involved in the Merton Jump Diffusion process, $\mu$ arguably has the least interaction with the estimates of the other parameters. 
+Of all the parameters involved in the Merton Jump-Diffusion process, $\mu$ arguably has the least interaction with the estimates of the other parameters. 
 
 It is rather strange that the model exhibits a tendency to consistently underestimate the value of $\lambda$ (Figure \ref{fig:sensitivity_test:multiple_output:varying_mu:lambda}). This is clear throughout the investigation - $\lambda$ is almost always underestimated. This is not something to be expected, since \acrshort{ann}s have the property of easily being able to correct for bias.
 Similarly, all other parameters (besides $\mu$) kept constant, the model seems to consistently overestimate the value of $\mu_{jump}$ (Figure \ref{fig:sensitivity_test:multiple_output:varying_mu:jumps_mu}). As with the estimate of $\lambda$, one would expect and \acrshort{ann} to be able to easily correct for this clear bias.
@@ -892,7 +896,7 @@ The full sets of sensitivity tests are available in Appendix \ref{appendix:sensi
 \chapter{Results}
 \label{chapter:results}
 
-First, the individual accuracy of the selected architectures were investigated. $1000$ simulated sample paths from a Merton Jump Diffusion process with parameters, $\mu = 0.05$, $\sigma = 0.1$, $\lambda = 0.02$, $\mu_{jumps} = 0.05$ and $\sigma_{jumps} = 0.07$ were used. The (already trained) NN models were then used to predict these original parameters, given the set of $1000$ sample paths. 
+First, the individual accuracy of the selected architectures were investigated. $1000$ simulated sample paths from a Merton Jump-Diffusion process with parameters, $\mu = 0.05$, $\sigma = 0.1$, $\lambda = 0.02$, $\mu_{jumps} = 0.05$ and $\sigma_{jumps} = 0.07$ were used. The (already trained) NN models were then used to predict these original parameters, given the set of $1000$ sample paths. 
 
 The parameter estimation study investigated and compared results using: 
 \setlist{nolistsep}
@@ -1098,7 +1102,7 @@ While the architectures have demonstrated the ability to yield acceptable estima
 Even with good hardware, the training process can be time consuming. The models in this dissertation were trained using a g3 instance from \acrfull{aws} \acrfull{ec2}, which provides an Nvidia Tesla M60 \acrshort{gpu}. Despite having access to this computational power, the dedicated single output \acrshort{cnn} trained to predict $\hat{\sigma}_{jumps}$, took more than 36 hours to train.
 
 \subsubsection{Online Versus Offline Training}
-The advantage of training \acrshort{ann}s, is that the process is said to happen "offline". That means that one could train the model in advance, and prediction would need to happen when actually estimating the parameters. The prediction step takes much less time than the training process. 
+The advantage of training \acrshort{ann}s, is that the process is said to happen "offline". That means that one could train the model in advance, and only the prediction step would need to happen when actually estimating the parameters. The prediction step takes much less time than the training process. 
 
 In contrast, the vanilla \acrshort{mlestimation} approach cannot be "trained" in advance. 
 
@@ -1119,18 +1123,18 @@ The fully connected \acrshort{ann}s and \acrshort{cnn}s described in this paper 
 
 This project investigated the ability of \acrshort{ann}s to estimate the parameters of a sufficiently complex \acrshort{sde}. Chapter \ref{chapter:introduction} introduced the problem of calibrating \acrshort{sde}s, and discussed the limitations of existing approaches. Chapter \ref{chapter:literature_review} presented the literature on similar studies. The concepts used throughout the dissertation were explained in Chapter \ref{chapter:methodology}, as was the methodology used in the simulation study. The simulation study itself, together with the proposed \acrshort{ann} architectures were presented in Chapter \ref{chapter:simulation_study}. Chapter \ref{chapter:results} reported on the results of the study and compared them to those obtained using traditional parameter estimation techniques such as \acrshort{mlestimation}, \acrshort{mme}, \acrshort{em} and likelihood profiling.
 
-The simulation study demonstrated the ability of \acrshort{ann}s to act as a calibration scheme for the Merton Jump Diffusion process. The \acrshort{cnn} architecture was able to yield acceptable parameter estimates, within realistic parameter bounds. What this means is that an \acrshort{ann} displays the ability to learn the calibration function and serve as a calibrator for a complex stochastic process, without the need to derive the likelihood function - which can be difficult to do, as demonstrated by \citet{Honore} and \citet{Mongwe}.
+The simulation study demonstrated the ability of \acrshort{ann}s to act as a calibration scheme for the Merton Jump-Diffusion process. The \acrshort{cnn} architecture was able to yield acceptable parameter estimates, within realistic parameter bounds. What this means is that an \acrshort{ann} displays the ability to learn the calibration function and serve as a calibrator for a complex stochastic process. This can be done without the need to derive the likelihood function - which can be difficult to do, as demonstrated by \citet{Honore} and \citet{Mongwe}.
 
 The models presented in this dissertation are far from optimal, with very basic properties common to most \acrshort{ann} architectures. With the advancements in neural network research, and the speed at which deep learning is currently applied to multiple unrelated fields, there is good reason to believe that neural networks have the ability to outperform traditional calibration techniques. 
 
 \subsubsection{Further Research}
 This research project aimed to demonstrate the ability of \acrshort{ann}s to act as a calibration scheme for stochastic processes. The question still remains as to whether \acrshort{ann}s could provide a \textit{universal} calibration method for the calibration of \textit{any}, arbitrarily complex stochastic process. Further research could focus on answering this question. It would be of interest to increase the accuracy of the predictions by trying different architectures, in particular: \acrshort{rnn}s (which are arguably much more appropriate for time series problems than the \acrshort{cnn} architecture used in this paper).
 
-This paper should be extended to other, more complex stochastic processes in order to test the limits of \acrshort{ann}s as universal stochastic process calibrators. 
+This paper should be extended to other, more complex stochastic processes in order to test the limits of \acrshort{ann}s as universal calibrators of stochastic processes. 
 
 \subsubsection{Postscript}
 
-Stochastic processes are powerful tools which can be applied to almost any time series-related problem. They offer clear, truthful representations of real-world processes in ways in which deterministic formulae cannot. Yet the underlying mathematics complicate their application. What one might hope to achieve is a democratisation of stochastic processes. Neural networks display the potential to offer anyone the ability to implement and benefit from these statistical tools, without a background in stochastic calculus.
+Stochastic processes are powerful tools which can be applied to almost any time series-related problem. They offer clear, truthful representations of real-world processes in ways in which deterministic formulae cannot. Yet the underlying mathematics complicate their application. What one might hope to achieve is a democratisation of stochastic processes. Neural networks display the potential to offer actuaries the ability to implement and benefit from these statistical tools, without a background in stochastic calculus.
 
 %\section{Practical Considerations}
 %It must be noted that - at the time of writing - building and training \acrshort{ann}s is a time consuming and computationally intensive process. Overall, the author spent more than 300 GPU-hours on NVIDIA\textregistered \xspace Tesla\textregistered \xspace K80 devices implementing, training and testing the architectures presented in this dissertation. However, the progress made in the last year alone indicate that building and training \acrshort{ann}s are becoming more widely adopted, and - with that - come improvements in hardware and software tools.
@@ -1143,7 +1147,7 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 \applyappendixstyling
 \appendix
 
-\chapter[Appendix A]{Merton Jump Diffusion Process Parameters}
+\chapter[Appendix A]{Merton Jump-Diffusion Process Parameters}
 \label{appendix:merton_jd_parameters_effects}
 
 \subsubsection{Mu, $\mu$}
@@ -1151,7 +1155,7 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.65\linewidth]{Images/Parameter-Effects/Effects_Mu}
-	\caption[The effects of changes in $\mu$ to the Merton Jump Diffusion returns process]{The effects of changes in $\mu$ to the simulated asset price resulting from a Merton Jump Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \lambda=0.02, \sigma_{jumps}=0.07$, and $\mu_{jumps}=0.05$.}
+	\caption[The effects of changes in $\mu$ to the Merton Jump-Diffusion returns process]{The effects of changes in $\mu$ to the simulated asset price resulting from a Merton Jump-Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \lambda=0.02, \sigma_{jumps}=0.07$, and $\mu_{jumps}=0.05$.}
 	\label{fig:effects_mu}
 \end{figure}
 
@@ -1160,7 +1164,7 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.65\linewidth]{Images/Parameter-Effects/Effects_Sigma}
-	\caption[The effects of changes to $\sigma$ on the Merton Jump Diffusion returns process]{The effects of changes to $\sigma$ on the simulated asset price resulting from a Merton Jump Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\mu=0.1, \lambda=0.02, \sigma_{jumps}=0.07$, and $\mu_{jumps}=0.05$.}
+	\caption[The effects of changes to $\sigma$ on the Merton Jump-Diffusion returns process]{The effects of changes to $\sigma$ on the simulated asset price resulting from a Merton Jump-Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\mu=0.1, \lambda=0.02, \sigma_{jumps}=0.07$, and $\mu_{jumps}=0.05$.}
 	\label{fig:effects_sigma}
 \end{figure}
 
@@ -1169,7 +1173,7 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Images/Parameter-Effects/Effects_Lambda}
-	\caption[The effects of changes to $\lambda$ on the Merton Jump Diffusion returns process]{The effects of changes to $\lambda$ on the simulated asset price resulting from a Merton Jump Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \mu=0.05, \sigma_{jumps}=0.07$, and $\mu_{jumps}=0.05$.}
+	\caption[The effects of changes to $\lambda$ on the Merton Jump-Diffusion returns process]{The effects of changes to $\lambda$ on the simulated asset price resulting from a Merton Jump-Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \mu=0.05, \sigma_{jumps}=0.07$, and $\mu_{jumps}=0.05$.}
 	\label{fig:effects_lambda}
 \end{figure}
 
@@ -1178,7 +1182,7 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Images/Parameter-Effects/Effects_Jumps_Sigma}
-	\caption[The effects of changes to $\sigma_{jumps}$ on the Merton Jump Diffusion returns process]{The effects of changes to $\sigma_{jumps}$ on the simulated asset price resulting from a Merton Jump Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \mu=0.05, \lambda=0.03$, and $\mu_{jumps}=0.05$.}
+	\caption[The effects of changes to $\sigma_{jumps}$ on the Merton Jump-Diffusion returns process]{The effects of changes to $\sigma_{jumps}$ on the simulated asset price resulting from a Merton Jump-Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \mu=0.05, \lambda=0.03$, and $\mu_{jumps}=0.05$.}
 	\label{fig:effects_jumps_sigma}
 \end{figure}
 
@@ -1188,7 +1192,7 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Images/Parameter-Effects/Effects_Jumps_Mu}
-	\caption[The effects of changes to $\mu_{jumps}$ on the Merton Jump Diffusion returns process]{The effects of changes to $\mu_{jumps}$ on the simulated asset price resulting from a Merton Jump Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \mu=0.05, \lambda=0.02$, and $\sigma_{jumps}=0.07$.}
+	\caption[The effects of changes to $\mu_{jumps}$ on the Merton Jump-Diffusion returns process]{The effects of changes to $\mu_{jumps}$ on the simulated asset price resulting from a Merton Jump-Diffusion returns process. The random seed was set constant at a value of $1234$. The other parameters are held constant at $\sigma=0.1, \mu=0.05, \lambda=0.02$, and $\sigma_{jumps}=0.07$.}
 	\label{fig:effects_jumps_mu}
 \end{figure}
 
@@ -1431,13 +1435,13 @@ Stochastic processes are powerful tools which can be applied to almost any time 
 		\label{fig:appendix:sensitivity_test:multiple_output:varying_jumps_mu}}
 \end{figure}
 
-\clearpage
-\section{Convolutional Single Output Architecture}
+%\clearpage
+%\section{Convolutional Single Output Architecture}
 
 \chapter[Appendix C]{Results}
 \label{appendix:results}
 
-This chapter documents the individual accuracy of the investigated architectures, comparing each with the results obtained using more traditional methods such as \acrshort{mlestimation}, \acrshort{mme} and the likelihood profiling method of \citet{Honore}. $1000$ simulated sample paths from a Merton Jump Diffusion process with parameters, $\mu = 0.05$, $\sigma = 0.1$, $\lambda = 0.02$, $\mu_{jumps} = 0.05$ and $\sigma_{jumps} = 0.07$ were used. The (already trained) NN models were then used to predict these original parameters, given the set of $1000$ sample paths. Figures \ref{fig:appendix:individual-parameter-estimation-results--mu}, \ref{fig:appendix:individual-parameter-estimation-results--sigma}, \ref{fig:appendix:individual-parameter-estimation-results--lambda}, \ref{fig:appendix:individual-parameter-estimation-results--mu_jumps}, and \ref{fig:appendix:individual-parameter-estimation-results--sigma_jumps} illustrate the parameter estimation results for $\mu, \sigma, \lambda, \mu_{jumps}$ and $\sigma_{jumps}$ using: 
+This chapter documents the individual accuracy of the investigated architectures, comparing each with the results obtained using more traditional methods such as \acrshort{mlestimation}, \acrshort{mme} and the likelihood profiling method of \citet{Honore}. $1000$ simulated sample paths from a Merton Jump-Diffusion process with parameters, $\mu = 0.05$, $\sigma = 0.1$, $\lambda = 0.02$, $\mu_{jumps} = 0.05$ and $\sigma_{jumps} = 0.07$ were used. The (already trained) NN models were then used to predict these original parameters, given the set of $1000$ sample paths. Figures \ref{fig:appendix:individual-parameter-estimation-results--mu}, \ref{fig:appendix:individual-parameter-estimation-results--sigma}, \ref{fig:appendix:individual-parameter-estimation-results--lambda}, \ref{fig:appendix:individual-parameter-estimation-results--mu_jumps}, and \ref{fig:appendix:individual-parameter-estimation-results--sigma_jumps} illustrate the parameter estimation results for $\mu, \sigma, \lambda, \mu_{jumps}$ and $\sigma_{jumps}$ using: 
 
 \setlist{nolistsep}
 \begin{enumerate}[a)]
@@ -1691,7 +1695,7 @@ All the parameter estimates produced by \acrshort{mlestimation}, \acrshort{mme} 
 	
 	\textbf{Matplotlib} & Python 2D plotting library. &\cite{matplotlib} \\ 
 	
-	\textbf{Mongwe} & R implementation of a parameter estimation procedure for the Merton Jump Diffusion process, using \acrshort{mlestimation}, \acrshort{mme} and likelihood profiling \citep{Honore}. & \cite{Mongwe} \\ 
+	\textbf{Mongwe} & R implementation of a parameter estimation procedure for the Merton Jump-Diffusion process, using \acrshort{mlestimation}, \acrshort{mme} and likelihood profiling \citep{Honore}. & \cite{Mongwe} \\ 
 	
 	\textbf{Numpy} & Package for scientific computing with Python. &\cite{numpy} \\ 
 	
@@ -1716,7 +1720,7 @@ All the parameter estimates produced by \acrshort{mlestimation}, \acrshort{mme} 
 \lstinputlisting[language=Python]{Source_Code/Models.py}
 
 \newpage
-\section{Merton Jump Diffusion Stochastic Process Simulation}
+\section{Merton Jump-Diffusion Stochastic Process Simulation}
 \label{appendix:source_code:merton_simulation}
 The source code in this section (\ref{appendix:source_code:merton_simulation}) was provided by \cite{reid}.
 \lstinputlisting[language=Python]{Source_Code/Merton_Jump_Diffusion_SDE_Utilities.py}
